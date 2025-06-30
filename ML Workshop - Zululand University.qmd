@@ -1,0 +1,208 @@
+---
+title: "Workshop: Machine Learning for Gene Expression Data in R"
+format: html
+editor: visual
+date: "`r Sys.Date()`"
+---
+
+# **Workshop: Machine Learning for Gene Expression Analysis**
+
+This workshop covers **data preprocessing, unsupervised/supervised learning, and differential expression analysis** using gene expression data in R.
+
+------------------------------------------------------------------------
+
+## **1. Introduction to Gene Expression Data**
+
+### **What is Gene Expression Data?**
+
+Gene expression data measures the activity (expression levels) of genes in a biological sample. Common technologies: - **RNA-seq** (high-throughput sequencing)\
+- **Microarrays** (hybridization-based)
+
+### **Key Challenges**
+
+-   **High dimensionality** (Thousands of genes, few samples)\
+-   **Noise & batch effects** (Technical variability)\
+-   **Biological interpretation** (Pathway analysis, biomarkers)
+
+### **Example Dataset: TCGA-BRCA (Breast Cancer)**
+
+-   **Source:** [TCGA Data Portal](https://portal.gdc.cancer.gov/)\
+-   **Format:** Matrix of counts (rows = genes, columns = samples) + clinical metadata.
+
+```{r setup, message=FALSE}
+# Load required libraries 
+library(TCGAbiolinks) # TCGA data download 
+library(DESeq2) # Normalization & DE analysis 
+library(tidyverse) # Data manipulation 
+library(caret) # Machine learning 
+library(randomForest) # Classification
+```
+
+## **2. Data Preprocessing**
+
+### Step 1: Download TCGA Data
+
+```{r}
+query <- GDCquery(
+  project = "TCGA-BRCA",
+  data.category = "Transcriptome Profiling",
+  data.type = "Gene Expression Quantification",
+  workflow.type = "STAR - Counts"
+)
+GDCdownload(query)
+data <- GDCprepare(query)
+```
+
+### Step 2: Extract Counts & Metadata
+
+```{r}
+counts <- assay(data, "unstranded")  # Raw counts
+metadata <- colData(data) %>% as.data.frame()  # Clinical data
+```
+
+## **Step 3: Normalization (DESeq2)**
+
+### Why normalize?
+
+```         
+* Corrects for library size differences.
+* Reduces technical bias.
+```
+
+```{r}
+dds <- DESeqDataSetFromMatrix(
+  countData = counts,
+  colData = metadata,
+  design = ~ 1  # No model yet
+)
+dds <- estimateSizeFactors(dds)  # Normalization
+normalized_counts <- counts(dds, normalized = TRUE)
+```
+
+### **Step 4: Filter Low-Expressed Genes**
+
+```{r}
+keep <- rowSums(counts(dds) >= 10) >= 5  # Keep genes with ≥10 counts in ≥5 samples
+dds <- dds[keep, ]
+```
+
+### **Step 5: Log Transformation (for visualization)**
+
+```{r}
+rld <- rlog(dds, blind = TRUE)  # Stabilizes variance
+```
+
+## **3. Unsupervised Learning**
+
+### **Principal Component Analysis (PCA)**
+
+**Goal:** Reduce dimensionality and visualize sample similarity.
+
+```{r}
+pca_data <- prcomp(t(assay(rld)), scale. = TRUE)
+pca_df <- as.data.frame(pca_data$x[, 1:2])
+pca_df$group <- metadata$sample_type  # Tumor vs. Normal
+
+ggplot(pca_df, aes(PC1, PC2, color = group)) +
+  geom_point() +
+  labs(title = "PCA of Gene Expression Data") +
+  theme_minimal()
+```
+
+### **Hierarchical Clustering**
+
+**Goal:** Group samples based on expression similarity.
+
+```{r}
+dist_matrix <- dist(t(assay(rld)))
+hc <- hclust(dist_matrix)
+plot(hc, main = "Hierarchical Clustering of Samples")
+```
+
+## **4. Supervised Learning (Classification)**
+
+### **Goal:** Predict tumor vs. normal samples.
+
+### **Step 1: Prepare Data**
+
+```{r}
+expr_data <- t(assay(rld))
+labels <- ifelse(metadata$sample_type == "Primary Tumor", "Tumor", "Normal")
+
+set.seed(123)
+train_idx <- createDataPartition(labels, p = 0.7, list = FALSE)
+train_data <- expr_data[train_idx, ]
+test_data <- expr_data[-train_idx, ]
+train_labels <- labels[train_idx]
+test_labels <- labels[-train_idx]
+```
+
+### **Step 2: Train Random Forest**
+
+```{r}
+rf_model <- randomForest(x = train_data, y = as.factor(train_labels))
+predictions <- predict(rf_model, test_data)
+confusionMatrix(predictions, as.factor(test_labels))
+```
+
+### **Step 3: Feature Importance**
+
+```{r}
+importance <- importance(rf_model)
+top_genes <- names(sort(importance[, 1], decreasing = TRUE)[1:10])
+print(top_genes)  # Top predictive genes
+```
+
+## **5. Differential Expression Analysis (DESeq2)**
+
+**Goal:** Identify genes significantly different between tumor and normal samples.
+
+```{r}
+dds$group <- factor(ifelse(
+  metadata$sample_type == "Primary Tumor", "Tumor", "Normal"
+))
+dds <- DESeq(dds)
+res <- results(dds, contrast = c("group", "Tumor", "Normal"))
+
+# Extract significant genes (FDR < 0.05, |log2FC| > 1)
+sig_genes <- res[which(res$padj < 0.05 & abs(res$log2FoldChange) > 1), ]
+head(sig_genes[order(sig_genes$padj), ])
+```
+
+## **6. Advanced Topics (Optional)**
+
+### **LASSO Regression (Feature Selection)**
+
+```{r}
+library(glmnet)
+x <- as.matrix(train_data)
+y <- as.factor(train_labels)
+lasso_model <- cv.glmnet(x, y, family = "binomial", alpha = 1)
+```
+
+### **Survival Analysis (Cox Regression)**
+
+```{r}
+library(survival)
+metadata$OS_time <- metadata$days_to_last_follow_up  # Hypothetical survival time
+metadata$OS_status <- metadata$vital_status          # Hypothetical event indicator
+cox_model <- coxph(Surv(OS_time, OS_status) ~ top_genes[1], data = metadata)
+```
+
+## **Conclusion**
+
+-   **Key Takeaways:**
+
+    -   Preprocessing is critical (normalization, filtering).
+
+    -   Unsupervised methods (PCA, clustering) reveal patterns.
+
+    -   Supervised learning (Random Forest) can classify samples.
+
+    -   Differential expression identifies biomarkers.
+
+-   **Further Reading:**
+
+    -   [DESeq2 Vignette](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html)
+
+    -   [TCGAbiolinks Tutorial](https://bioconductor.org/packages/release/bioc/vignettes/TCGAbiolinks/inst/doc/analysis.html)
