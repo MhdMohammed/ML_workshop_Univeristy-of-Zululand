@@ -1,0 +1,358 @@
+---
+title: "Introduction to R, RStudio, and R Markdown"
+author: ""
+date: "2025-07-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+In this course we will be using the R software environment for all our analysis. Throughout the course you will learn R and data analysis techniques simultaneously. However, we need to introduce basic R syntax to get you going. 
+
+In this Bootcamp, rather than cover every R skill you need, we introduce just enough so that you can follow along the remaining short courses where we provide more in-depth coverage, building upon what you learn in this Bootcamp. We find that we better retain R knowledge when we learn it to solve a specific problem.
+
+
+
+## Basic Features of R
+Today R runs on almost any standard computing platform and operating system. Its open source nature means that anyone is free to adapt the software to whatever platform they choose. Indeed, R has been reported to be running on modern tablets, phones, PDAs, and game consoles.
+
+One nice feature that R shares with many popular open source projects is frequent releases. These days there is a major annual release, typically in October, where major new features are incorporated and released to the public. Throughout the year, smaller-scale bugfix releases will be made as needed. The frequent releases and regular release cycle indicates active development of the software and ensures that bugs will be addressed in a timely manner. Of course, while the core developers control the primary source tree for R, many people around the world make contributions in the form of new feature, bug fixes, or both.
+
+Another key advantage that R has over many other statistical packages (even today) its sophisticated graphics capabilities. R’s ability to create “publication quality” graphics has existed since the very beginning and has generally been better than competing packages. Today, with many more visualization packages available than before, that trend continues. R’s base graphics system allows for very fine control over essentially every aspect of a plot or graph. Other newer graphics systems, like lattice and ggplot2 allow for complex and sophisticated visualizations of high-dimensional data.
+
+Finally, one of the joys of using R has nothing to do with the language it self, but rather with the active and vibrant user community. In many ways, a language is successful in as much as it creates a platform with which many people can create new things. R is that platform and thousands of people around the world have come together to make contributions to R, to develop packages, and help each other use R for all kinds of applications. The R-help and R-devel mailing lists have been highly active for over a decade now and there is considerable activity on web sites like Stack Overflow.
+
+## Free Software
+
+A major advantage that R has over many other statistical packages and is that it’s free in the sense of free software (it’s also free in the sense of free beer). The copyright for the primary source code for R is held by the [R Foundation](https://www.r-project.org/foundation/) and is published under the [GNU General Public License version 2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
+
+According to the Free Software Foundation, with free software, you are granted the following four freedoms
+
+ * The freedom to run the program, for any purpose (freedom 0).
+ * The freedom to study how the program works, and adapt it to your needs (freedom 1). Access to the source code is a precondition for this.
+ * The freedom to redistribute copies so you can help your neighbor (freedom 2).
+ * The freedom to improve the program, and release your improvements to the public, so that the whole community benefits (freedom 3). Access to the source code is a precondition for this.
+
+
+
+---
+
+## R, the language
+
+**`R`** itself is a language and environment for statistical computing and graphics, which operates as an integrated suite of software facilities for data manipulation, calculation, and graphical display. It includes:
+
+  *  an effective data handling and storage facility,
+  *  a suite of operators for calculations,
+  *  a large, coherent, integrated collection of intermediate tools for data analysis,
+  *  graphical facilities for data analysis and display, either on-screen or on hardcopy, and
+  *  a well-developed, simple and effective programming language
+
+
+**`R`** is a powerful and effective tool for computing, statistics and analysis, and producing data visualizations. However, many applications exist that can do these or similar things. **`R`** has a number of benefits that make it particularly useful, though.
+
+### Benefits of R
+
+First, **`R`** is both *open source* and *free*. This allows you to take the tool and the skills you’ve learned with you wherever you go; you are not dependent on your employer to buy or have a license of a particular software. This is especially relevant as many other software with similar functionality often cost hundreds, if not thousands, of dollars for a single license.
+
+The *open source* nature of **`R`** has also resulted in a robust set of users across a wide variety of disciplines who are constantly updating and revising the language. **`R`** therefore has some of the most up-to-date and innovative functionality and methods available to its users, should they know where to look. You can download **`R`** from [here](https://cran.r-project.org/).
+
+### Packages
+
+Within **`R`**, these functions and tools are often implemented as packages. Packages allow advanced users of **`R`** to contribute statistical methods and computing tools to the general users of **`R`**. These packages are reviewed and vetted before being made available for public use; they are often frequently updated as well. In the course, we will install some basic packages that are frequently used throughout the course.
+
+#### Design of the R System
+The primary R system is available from the [Comprehensive R Archive Network](https://cran.r-project.org/), also known as CRAN. CRAN also hosts many add-on packages that can be used to extend the functionality of R.
+
+The R system is divided into 2 conceptual parts:
+
+1- The “base” R system that you download from CRAN: Linux Windows Mac Source Code
+2- Everything else.
+
+R functionality is divided into a number of packages.
+
+ * The “base” R system contains, among other things, the base package which is required to run R and contains the most fundamental functions.
+ * The other packages contained in the “base” system include utils, stats, datasets, graphics, grDevices, grid, methods, tools, parallel, compiler, splines, tcltk, stats4.
+ * There are also “Recommended” packages: boot, class, cluster, codetools, foreign, KernSmooth, lattice, mgcv, nlme, rpart, survival, MASS, spatial, nnet, Matrix.
+
+When you download a fresh installation of R from CRAN, you get all of the above, which represents a substantial amount of functionality. However, there are many other packages available:
+
+ * There are over 4000 packages on CRAN that have been developed by users and programmers around the world.
+ * There are also many packages associated with the [Bioconductor project](https://bioconductor.org/).
+ * People often make packages available on their personal websites; there is no reliable way to keep track of how many packages are available in this fashion.
+ * There are a number of packages being developed on repositories like GitHub and BitBucket but there is no reliable listing of all these packages.
+
+### Installation
+The first thing you need to do to get started with R is to install it on your computer. R works on pretty much every platform available, including the widely available Windows, Mac OS X, and Linux systems.
+---
+
+## RStudio
+
+RStudio is an integrated development environment (IDE) that makes **`R`** a bit more user-friendly. While it is not the only way to use **`R`**, it provides a helpful and intuitive interface for writing and editing code, as well as creating documents and reports. It is not, however, a requirement for using the **`R`** language.
+
+Additionally, it is important to note that RStudio is an entirely separate piece of software - it will need to be downloaded separately from **`R`**.
+
+### Navigating RStudio
+
+As you can see, the RStudio interface is primarily composed of 4 quadrants.
+
+In the upper-left corner is the **source** pane. This is the primarily location where most of your work will take place. You will write and edit collections of code or R Scripts. When working in the source pane, your code will not compile until you tell it to run; this allows you the flexibility to work at your own pace, as well as to save your work.
+
+In the lower-left corner is the **console**, or the command window. The console is the powerhouse of the software; this is where R actually evaluates code. While you can type code directly into the console and receive immediate results, it is advisable to stick to the source pane while you are learning how to use R. Running code in the source pane will automatically produce output in the console pane.
+
+The upper-right quadrant contains the **Environment** and **History** tabs. The Environment tab displays a list of all the data objects that you have defined in your current R session, as well as some basic details about the data (such as the number of observations and variables in each). The History tab contains an archive of all the commands you’ve run in the current session.
+
+Finally, the lower-right quadrant holds a number of helpful navigation tabs. The **Files** tab displays your hard drive’s own file directory for easy access. The **Plots** tab will show the plots and visualizations you have created in your current R session. The **Packages** tabs shows a list of all the packages currently installed, as well as an indication of whether or not that are loaded in the current session. The **Help** tab is, unsurprisingly, the help menu.
+
+Until you are comfortable writing and executing code to analyze data, the RStudio interface can seem intimidating. Remember - since these are open source software, there are plenty of resources online to help as well. A **_cheat sheet_** for the RStudio IDE can be found [here](https://rstudio.github.io/cheatsheets/html/rstudio-ide.html?_gl=1*fzyin*_ga*MzY3MTc5NjUyLjE3MDc4MDIyNzQ.*_ga_2C0WZ1JHG0*MTcwODM1MjE4NC4zLjEuMTcwODM1MjMxMi4wLjAuMA..).
+
+---
+
+## R Markdown
+
+Markdown is a tool for converting plain text into formatted text. R Markdown utilizes the markdown syntax in order to combine formatted text with code in a single document.
+
+Within RStudio, R Markdown is a specific type of file format for making dynamic documents. It allows you to simultaneously:
+
+   * Save and execute code
+   * Produce high quality documents that include both code and text
+
+For the purposes of our Bootcamp, R Markdown allows us to include code chunks and the text that helps explain them in an easy-to-read manner. For your own use, R Markdown will allow you to write documents and reports that include traditional formatted text, as well as the data visualizations you make in class, and present them both together in a high quality professional document.
+
+
+Markdown is a simplified version of ‘markup’ languages. Unlike cumbersome word processing applications, text written in Markdown uses simple and intuitive formatting elements and can be easily shared between computers, mobile phones, and people. It’s quickly becoming the writing standard for academics, scientists, writers, and many more. Websites like GitHub and reddit use Markdown to style their comments.
+
+Formatting text in Markdown has a very gentle learning curve. It doesn’t do anything fancy like change the font size, color, or type - just the essentials, using keyboard symbols you already know. All you have control over is the display of the text-stuff like making things bold, creating headers, and organizing lists.
+
+We won’t go into a lot of detail, but will run through a few basic examples. For more details and examples, click [here](https://www.markdowntutorial.com/).
+
+
+The R Markdown file, a plain text file that has the extension `.Rmd`. When you open an R Markdown file, the file contains three types of content:
+
+ * An (optional) YAML header surrounded by ---s.
+ * R code chunks surrounded by ```s.
+ * text mixed with simple text formatting.
+
+
+#### Italics and Bold
+
+To make a phrase italic in Markdown, you can surround words with a single underscore (`_`) or asterisk (`*`). For example, _this_ word would become italic.
+
+Similarly, to make phrases bold in Markdown, you can surround words with two underscores (`__`) or two asterisks ( `**` ). This will **really** get your point across.
+
+Most commonly, a single underscore is used for italics and two asterisks are used for bold. 
+
+Of course, you can use **_both_** italics and bold in the same line by adding both an underscore and asterisks (`**_`). You can also span them **_across multiple words_**.
+
+In general, it doesn't matter which order you place the asterisks or underscores. I prefer to place the asterisks on the outside to make it **_easier to read_**.
+
+
+#### Headers
+
+Headers are frequently used on websites, magazine articles, and notices, to draw attention to a section. As their name implies, they act like titles or subtitles above sections.
+
+There are six types of headers, in decreasing sizes:
+
+# Header one
+## Header two
+### Header three
+#### Header four
+##### Header five
+###### Header six
+
+To make headers in Markdown, you preface the phrase with a hash mark (`#`). You place the same number of hash marks as the size of the header you want. For example, for a header one, you'd use one hash mark (`# Header One`), while for a header three, you'd use three (`### Header Three`). It's up to you to decide when it's appropriate to use which header. In general, headers one and six should be used sparingly.
+
+
+#### Links
+
+There are two different link types in Markdown, but both of them render the exact same way. The first link style is called an _inline_ link. To create an inline link, you wrap the link text in brackets (`[ ]`), and then you wrap the link in parenthesis (`( )`). For example, to create a hyperlink to www.github.com, with a link text that says, Visit GitHub!, you'd write this in Markdown: [Visit GitHub!](https://github.com/).
+
+The other link type is called a reference link. As the name implies, the link is actually a reference to another place in the document. Here's an example:
+
+Here's [a link to something else][another place].  
+Here's [yet another link][another link].  
+And now back to [the first link][another place].  
+
+[another place]: https://github.com/
+[another link]: https://www.google.com/
+
+The "references" above are the second set of brackets: [another place] and [another link]. At the bottom of a Markdown document, these brackets are defined as proper links to outside websites. An advantage of the reference link style is that multiple links to the same place only need to be updated once. For example, if we decide to make all of the [another place] links go somewhere else, we only have to change the single reference link.
+
+Reference links don't appear in the rendered Markdown. You define them by providing the same tag name wrapped in brackets, followed by a colon, followed by the link.
+
+
+#### Images
+
+If you know how to create links in Markdown, you can create images, too. The syntax is nearly the same.
+
+Images also have two styles, just like links, and both of them render the exact same way. The difference between links and images is that images are prefaced with an exclamation point (`!`).
+
+The first image style is called an _inline image link_. To create an inline image link, enter an exclamation point (`!`), wrap the alt text in brackets (`[ ]`), and then wrap the link in parenthesis (`( )`). (Alt text is a phrase or sentence that describes the image for the visually impaired.)
+
+For example, to create an inline image link to https://octodex.github.com/images/bannekat.png, with an alt text that says, Benjamin Bannekat, you'd write this in Markdown: 
+
+![Benjamin Bannekat](https://octodex.github.com/images/bannekat.png){ width=50% }
+
+
+Although you don't _need_ to add alt text, it will make your content accessible to your audience, including people who are visually impaired, use screen readers, or do not have high speed internet connections. The image I chose is actually much larger so I added `{ width=50% }` to shrink it a bit.
+
+For a reference image, you'll follow the same pattern as a reference link. You'll precede the Markdown with an exclamation point, then provide two brackets for the alt text, and then two more for the image tag. At the bottom of your Markdown page, you'll define an image for the tag.
+
+Here's an example: the first reference tag is called "First Father", and links to http://octodex.github.com/images/founding-father.jpg; the second image links out to http://octodex.github.com/images/foundingfather_v2.png.
+
+
+![The first father][First Father]
+
+![The second first father][Second Father]
+
+[First Father]: http://octodex.github.com/images/founding-father.jpg { width=50% }
+
+[Second Father]:http://octodex.github.com/images/foundingfather_v2.png { width=50% }
+
+
+#### Lists
+
+There are two types of lists in the known universe: unordered and ordered. That's a fancy way of saying that there are lists with bullet points, and lists with numbers.
+
+To create an unordered list, you'll want to preface each item in the list with an asterisk (`*`). Each list item also gets its own line. For example, a grocery list in Markdown might look like this:
+
+* Milk
+* Eggs
+* Salmon
+* Butter
+
+An ordered list is prefaced with numbers, instead of asterisks. For example:
+
+1. Crack three eggs over a bowl
+2. Pour a gallon of milk into the bowl
+3. Rub the salmon vigorously with butter
+4. Drop the salmon into the egg-milk bowl
+
+Easy, right? It's just like you'd expect a list to look.
+
+
+#### knitr
+
+`knitr` is an R package that is used for _statistical literate programming_, meaning you are able to integrate code and text in a single, simple document format. It supports `R Markdown`, `R LaTex`, and `R HTML` as documentation languages, and can export `markdown`, `PDF` and `HTML` documents.
+
+Something that is really nice about using `R Markdown` with `knitr` is that your final document will not be created if there is an error in your code. Thus, it's really easy to check if your code is running by simply `knitting` the `.Rmd` file.
+
+Make sure to install the latest version of the `knitr` package: `install.packages("knitr")`.
+
+
+`knitr` can execute code in many languages besides R. Some of the available language engines include:
+
+ * Python
+ * SQL
+ * Bash
+ * Rcpp
+ * Stan
+ * JavaScript
+ * CSS
+
+To process a code chunk using an alternate language engine, replace the r at the start of your chunk declaration with the name of the language:
+
+
+
+`` ```{bash} ``
+
+`` ``` ``
+
+
+### rmarkdown
+
+Documents, like this one, containing both R code (below) and markdown are `R Markdown` files. The similarly named `rmarkdown` is an R package that makes working with `R Markdown` easier by wrapping `knitr` along with other tools. For more details on both the `R Markdown` format and the `rmarkdown` package, see <http://rmarkdown.rstudio.com>.
+
+When you run `render` from the `rmarkdown` package (or click the **Knit** button above), the `.Rmd` file is fed to `knitr`, which executes all of the code chunks and creates a new markdown (`.md`) document which includes the code and it's output.
+
+The markdown file generated by `knitr` is then processed by pandoc which is responsible for creating the finished format.
+
+![](http://rmarkdown.rstudio.com/lesson-images/RMarkdownFlow.png)
+
+#### Embedding Code
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R 'code chunks' within the document. We **ALWAYS** want to see your code and output. If you do not provide the code and output in the `.Rmd` file, you will lose points. In addition to the `.Rmd` file, we expect you to provide a knitted `.html` file in your GitHub homework repository. We will also knit your `.Rmd` file on our own computers while grading, to make sure we can reproduce your results.
+
+##### Code Chunks
+
+There are 3 ways to create a code chunk:  
+
+1. Typing `` ```{r} `` to start a code chunk and then ` ``` ` to end a code chunk.  
+2. The keyboard shortcut **Ctrl + Alt + I** (OS X: **Cmd + Option + I**).  
+3. Clicking the Add Chunk button in the tool bar.
+
+
+Let's start with the built-in data set `pressure`, which includes data on the vapor pressure of Mercury as a function of temperature. You can embed an R code chunk like this:
+
+```{r}
+head(pressure)
+summary(pressure)
+```
+
+Note that both the code written and output produced are shown in the final document. 
+
+
+Chunk output can be customized with knitr options, arguments set in the {} of a chunk header. Above, we use five arguments:
+
+ * `include = FALSE` prevents code and results from appearing in the finished file. R Markdown still runs the code in the chunk, and the results can be used by other chunks.
+ * `echo = FALSE` prevents code, but not the results from appearing in the finished file. This is a useful way to embed figures.
+ * `message = FALSE` prevents messages that are generated by code from appearing in the finished file.
+ * `warning = FALSE` prevents warnings that are generated by code from appearing in the finished.
+ * `fig.cap = "..."` adds a caption to graphical results.
+
+#### Global Options
+
+To set global options that apply to every chunk in your file, call `knitr::opts_chunk$set` in a code chunk. Knitr will treat each option that you pass to `knitr::opts_chunk$set` as a global default that can be overwritten in individual chunk headers.
+
+#### Inline Code
+Code results can be inserted directly into the text of a `.Rmd` file by enclosing the code with `` `r ` ``. For example
+
+```
+`r x <- 5`  # radius of a circle For a circle with the radius `r x`,
+# its area is `r pi * x^2`.
+```
+
+R Markdown will always
+
+ * display the results of inline code, but not the code.
+ * apply relevant text formatting to the results.
+
+As a result, inline output is indistinguishable from the surrounding text. Inline expressions do not take knitr options.
+
+
+#### Equations
+
+If you know latex, including equations is really simple. The same syntax is used. For example, you can write an _inline_ equation like this - $A = \pi*r^{2}$. You can also center an equation like this:
+
+\begin{equation}
+\mathbb{E}[Y] = \beta_0 + \beta_1x
+\end{equation}
+
+#### The `cache` option
+
+All code chunks have to be re-computed every time you re-knit the file. If you have code chunks that take a while to process, you may want to use the `cache = TRUE` option which stores and then loads the results from cache after the first run, and can save you considerable time. This can be done on a chunk-by-chunk basis. However, this is only useful if you have code chunks you haven't edited since the first run. If the data or code changes, you will have to re-run the code to update the results
+
+#### Extracting R code
+
+In `knitr`, you can use `purl()` to pull out all of the R code and put it into a single `.R` file. This will ignore all prose outside of code chunks. The following code will create a file called `Introduction to R, RStudio, and R Markdown.R` in the same directory I'm working in.
+
+```{r, eval=FALSE}
+library(knitr)
+purl("Introduction to R, RStudio, and R Markdown.Rmd", documentation = 0)
+```
+
+
+#### Summary
+
+![](https://sachsmc.github.io/knit-git-markr-guide/knitr/img/knitr-workflow.png)
+
+#### Other Awesome Powers
+
+R Markdown can render PDF presentations with beamer, HTML presentations with ioslides, slidy and reveal.js. It can also be used to write full academic manuscripts. You can also build your own websites and interactive documents. These powers are too complicated and time consuming for this session, but at least you know they're possible!
+
+
+
+
